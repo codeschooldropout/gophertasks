@@ -67,3 +67,28 @@ func DisplayAllTasks() {
 	}
 
 }
+
+func TaskList() []string {
+	row, err := db.Query("SELECT * FROM gophertask ORDER BY task")
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	defer row.Close()
+
+	s := []string{}
+
+	for row.Next() {
+		var taskNote int
+		var task string
+		var description string
+		var category string
+		var status string
+
+		row.Scan(&taskNote, &task, &description, &category, &status)
+		// log.Println("[", category, "]", task, "-", description)
+		// s += "[" + category + "]" + task + "-" + description
+		s = append(s, task)
+
+	}
+	return s
+}

@@ -16,8 +16,12 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
 	"os"
 
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/codeschooldropout/gophertask/data"
+	"github.com/codeschooldropout/gophertask/ui"
 	"github.com/spf13/cobra"
 )
 
@@ -26,7 +30,16 @@ var rootCmd = &cobra.Command{
 	Use:   "gophertask",
 	Short: "Use gophertask to manage your task and time allotment",
 	Long:  `Modeled after pomodoro, gophertask is a tool for managing your time and tasks.`,
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Run: func(cmd *cobra.Command, args []string) {
+
+		// this is the default command if no other is specified
+		p := tea.NewProgram(ui.InitialModel(data.TaskList()))
+		if err := p.Start(); err != nil {
+			fmt.Printf("Error: %v\n", err)
+			os.Exit(1)
+		}
+
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
